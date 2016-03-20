@@ -1,0 +1,32 @@
+{
+  "name": "sonnylab-api",
+  "version": "1.0.0",
+  "description": "sonnylab api server",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.9.1",
+    "babel": "^6.1.18",
+    "babel-core": "^6.5.2",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.2.0",
+    "body-parser": "^1.14.1",
+    "cheerio": "^0.20.0",
+    "cors": "^2.7.1",
+    "es6-promise": "^3.0.2",
+    "express": "^4.13.3",
+    "moment": "^2.12.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sonnylab",
+    "api"
+  ],
+  "author": "sonnylazuardi",
+  "license": "MIT"
+}
