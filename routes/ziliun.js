@@ -8,7 +8,7 @@ const Ziliun = (app) => {
             url = url + 'page/' + page + '/';
         }
         return new Promise((resolve, reject) => {
-            axios.get(url, {timeout: 1000})
+            axios.get(url, {timeout: 7000})
                 .then((response) => {
                     var $ = cheerio.load(response.data);
                     var title, image, author, slug, description;
@@ -48,7 +48,7 @@ const Ziliun = (app) => {
 
     var loadArticle = (slug) => {
         return new Promise((resolve, reject) => {
-            axios.get('http://www.ziliun.com/'+slug+'/', {timeout: 1000})
+            axios.get('http://www.ziliun.com/'+slug+'/', {timeout: 7000})
                 .then((response) => {
                     var $ = cheerio.load(response.data);
                     var title, image, author, category, contents, content, subimage, subimage_credit, image_credit;
