@@ -1,9 +1,39 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
+import moment from 'moment';
 
 var imageReplace = {
     'http://www.event.phpindonesia.or.id/images/30jan2016_technology_update.jpg': 'https://lh3.googleusercontent.com/-zROEwpq1dOg/VvU8vFg1asI/AAAAAAAAKwI/4f_LWCuOyIkCJ3vEuxrMcW2cmaStMrfdA/s0/30jan2016_technology_update.jpg'
 };
+
+var videoCache = [];
+
+function loadYoutube(pageToken = null) {
+    return new Promise((resolve, reject) => {
+        console.log('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCoHfa6wCvqFVIqDTXOSNC_Q&order=date&key=AIzaSyBpu8hgnXbkqFVWrAvwRUEz7T13ii3I7WM&pageToken='+(pageToken ? pageToken : ''));
+        axios.get('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCoHfa6wCvqFVIqDTXOSNC_Q&order=date&key=AIzaSyBpu8hgnXbkqFVWrAvwRUEz7T13ii3I7WM&pageToken='+(pageToken ? pageToken : ''))
+            .then(function (result) {
+                var items = result.data.items.map((item) => {
+                    var id = item.id.videoId;
+                    var thumbnail = item.snippet.thumbnails.high.url;
+                    var title = item.snippet.title;
+                    var description = item.snippet.description;
+                    var date = moment(item.snippet.publishedAt).fromNow();
+                    var link = 'https://www.youtube.com/watch?v=' + id;
+
+                    return {
+                        id: id,
+                        thumbnail: thumbnail,
+                        title: title,
+                        description: description,
+                        date: date,
+                        link: link
+                    };
+                });
+                resolve(items);
+            });
+    });
+}
 
 const PhpIndonesia = (app) => {
     app.get('/phpindonesia/event', (req, res) => {
@@ -30,6 +60,20 @@ const PhpIndonesia = (app) => {
             res.json(items);
         });
     });
+
+    app.get('/phpindonesia/video', (req, res) => {
+        if (videoCache.length > 0) {
+            res.json(videoCache);
+        }
+        loadYoutube().then(items => {
+            if (JSON.stringify(videoCache.map(item => item.id)) !== JSON.stringify(items.map(item => item.id))) {
+                videoCache = items;
+                res.json(videoCache);
+            } else {
+                res.json(videoCache);
+            }
+        });
+    })
 };
 
 export default PhpIndonesia;
