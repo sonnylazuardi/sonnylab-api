@@ -10,7 +10,6 @@ var videoCache = [];
 
 function loadYoutube(pageToken = null) {
     return new Promise((resolve, reject) => {
-        console.log('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCoHfa6wCvqFVIqDTXOSNC_Q&order=date&key=AIzaSyBpu8hgnXbkqFVWrAvwRUEz7T13ii3I7WM&pageToken='+(pageToken ? pageToken : ''));
         axios.get('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCoHfa6wCvqFVIqDTXOSNC_Q&order=date&key=AIzaSyBpu8hgnXbkqFVWrAvwRUEz7T13ii3I7WM&pageToken='+(pageToken ? pageToken : ''))
             .then(function (result) {
                 var items = result.data.items.map((item) => {
