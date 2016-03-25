@@ -10,6 +10,7 @@ var videoCache = [];
 
 function loadYoutube(pageToken = null) {
     return new Promise((resolve, reject) => {
+        console.log('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCoHfa6wCvqFVIqDTXOSNC_Q&order=date&key=AIzaSyBpu8hgnXbkqFVWrAvwRUEz7T13ii3I7WM&pageToken='+(pageToken ? pageToken : ''));
         axios.get('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCoHfa6wCvqFVIqDTXOSNC_Q&order=date&key=AIzaSyBpu8hgnXbkqFVWrAvwRUEz7T13ii3I7WM&pageToken='+(pageToken ? pageToken : ''))
             .then(function (result) {
                 var items = result.data.items.map((item) => {
@@ -29,7 +30,7 @@ function loadYoutube(pageToken = null) {
                         link: link
                     };
                 });
-                resolve(items);
+                resolve({items, nextPageToken: result.data.nextPageToken});
             });
     });
 }
@@ -64,13 +65,18 @@ const PhpIndonesia = (app) => {
         if (videoCache.length > 0) {
             res.json(videoCache);
         }
-        loadYoutube().then(items => {
-            if (JSON.stringify(videoCache.map(item => item.id)) !== JSON.stringify(items.map(item => item.id))) {
-                videoCache = items;
-                res.json(videoCache);
-            } else {
-                res.json(videoCache);
-            }
+        loadYoutube().then(result => {
+            loadYoutube(result.nextPageToken).then(result2 => {
+                loadYoutube(result2.nextPageToken).then(result3 => {
+                    var items = [...result.items, ...result2.items, ...result3.items];
+                    if (JSON.stringify(videoCache.map(item => item.id)) !== JSON.stringify(items.map(item => item.id))) {
+                        videoCache = items;
+                        res.json(videoCache);
+                    } else {
+                        res.json(videoCache);
+                    }
+                });
+            });
         });
     })
 };
