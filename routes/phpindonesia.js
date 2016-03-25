@@ -19,11 +19,11 @@ const PhpIndonesia = (app) => {
                 items.push({
                     title: data.find('h4').first().children().first().text(),
                     description: data.find('p').first().text(),
-                    date: data.find('table').first().children().eq(0).children().eq(1).text(),
-                    code: data.find('table').first().children().eq(1).children().eq(1).text(),
-                    venue: data.find('table').first().children().eq(2).children().eq(1).text(),
-                    seat: data.find('table').first().children().eq(3).children().eq(1).text(),
-                    status: data.find('table').first().children().eq(4).children().eq(1).text(),
+                    date: data.find('table').first().children().eq(0).children().eq(1).text().replace(/<(?:.|\n)*?>/gm, ''),
+                    code: data.find('table').first().children().eq(1).children().eq(1).text().replace(/<(?:.|\n)*?>/gm, ''),
+                    venue: data.find('table').first().children().eq(2).children().eq(1).text().replace(/<(?:.|\n)*?>/gm, ''),
+                    seat: data.find('table').first().children().eq(3).children().eq(1).text().replace(/<(?:.|\n)*?>/gm, ''),
+                    status: data.find('table').first().children().eq(4).children().eq(1).text().replace(/<(?:.|\n)*?>/gm, ''),
                     image: image
                 });
             });
