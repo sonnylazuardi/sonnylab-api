@@ -36,6 +36,10 @@ var _blitz = require('./routes/blitz');
 
 var _blitz2 = _interopRequireDefault(_blitz);
 
+var _genneo = require('./routes/genneo');
+
+var _genneo2 = _interopRequireDefault(_genneo);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
@@ -43,13 +47,14 @@ app.server = _http2.default.createServer(app);
 
 app.use((0, _cors2.default)());
 app.use(_bodyParser2.default.json({
-    limit: '100kb'
+    limit: '1024kb'
 }));
 
 (0, _ziliun2.default)(app);
 (0, _karejo2.default)(app);
 (0, _phpindonesia2.default)(app);
 (0, _blitz2.default)(app);
+(0, _genneo2.default)(app);
 
 app.server.listen(process.env.PORT || 7010);
 console.log('sonnylab api is up on ' + app.server.address().port);
