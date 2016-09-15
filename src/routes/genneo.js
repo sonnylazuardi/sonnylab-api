@@ -30,7 +30,7 @@ const Genneo = (app) => {
                     <br/>
                     <img src="http://gu.gbippl.id/img/invitation.jpg" alt="" />
                     <br/>
-                    <img src="http://www.barcodes4.me/barcode/qr/genneo.png?value=${data.name}&size=5" alt="" />
+                    <img src="http://www.barcodes4.me/barcode/qr/genneo.png?value=${data.name}&size=12" alt="" />
                     <br/>
                     <i>nomor pendaftaran: ${data.name}</i>`);
                 var mail = new helper.Mail(from_email, subject, to_email, content);
@@ -71,7 +71,7 @@ const Genneo = (app) => {
             var data = response.data;
             var pendaftar = [];
             for (var id in data) {
-              pendaftar.push(Object.assign({}, data[id], {id}));
+                pendaftar.push(Object.assign({}, data[id], {id}));
             }
             res.json(pendaftar);
         });
