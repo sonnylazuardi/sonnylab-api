@@ -39,7 +39,7 @@ var Genneo = function Genneo(app) {
             var from_email = new helper.Email("gbipplriaubdg@gmail.com");
             var to_email = new helper.Email(data.email);
             var subject = "Pendaftaran PASSION - Genneo United";
-            var content = new helper.Content("text/html", '\n                    <h2>PASSION - Genneo United 🎉🎉</h2>\n                    <p>Selamat kamu sudah berhasil terdaftar di PASSION - GENNEO UNITED</p>\n                    <br/>\n                    <img src="http://gu.gbippl.id/img/invitation.jpg" alt="" />\n                    <br/>\n                    <img src="http://www.barcodes4.me/barcode/qr/genneo.png?value=' + data.name + '&size=5" alt="" />\n                    <br/>\n                    <i>nomor pendaftaran: ' + data.name + '</i>');
+            var content = new helper.Content("text/html", '\n                    <h2>PASSION - Genneo United 🎉🎉</h2>\n                    <p>Selamat kamu sudah berhasil terdaftar di PASSION - GENNEO UNITED</p>\n                    <br/>\n                    <img src="http://gu.gbippl.id/img/invitation.jpg" alt="" />\n                    <br/>\n                    <img src="http://www.barcodes4.me/barcode/qr/genneo.png?value=' + data.name + '&size=12" alt="" />\n                    <br/>\n                    <i>nomor pendaftaran: ' + data.name + '</i>');
             var mail = new helper.Mail(from_email, subject, to_email, content);
 
             var requestBody = mail.toJSON();
@@ -48,6 +48,7 @@ var Genneo = function Genneo(app) {
             request.path = '/v3/mail/send';
             request.body = requestBody;
             sg.API(request, function (response) {
+                console.log(Object.assign({}, data, { sent: true }));
                 _axios2.default.put(FIREBASE_GENNEO + '/daftar/' + data.name + '.json', Object.assign({}, data, { sent: true }));
             });
 

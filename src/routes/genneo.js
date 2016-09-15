@@ -40,7 +40,8 @@ const Genneo = (app) => {
                 request.method = 'POST';
                 request.path = '/v3/mail/send';
                 request.body = requestBody;
-                sg.API(request, function (response) {
+                sg.API(request, (response) => {
+                    console.log(Object.assign({}, data, {sent: true}));
                     axios.put(`${FIREBASE_GENNEO}/daftar/${data.name}.json`, Object.assign({}, data, {sent: true}));
                 });
 
