@@ -41,7 +41,6 @@ const Genneo = (app) => {
                 request.path = '/v3/mail/send';
                 request.body = requestBody;
                 sg.API(request, (response) => {
-                    console.log(Object.assign({}, data, {sent: true}));
                     axios.put(`${FIREBASE_GENNEO}/daftar/${data.name}.json`, Object.assign({}, data, {sent: true}));
                 });
 
@@ -49,6 +48,23 @@ const Genneo = (app) => {
             }).catch(err => {
                 res.json(null);
             })
+    });
+
+    app.post('/genneo/friends', (req, res) => {
+        var id = req.body.id;
+        var friends = req.body.friends;
+        Promise.all(friends.map(friend => {
+            friend.referral = id;
+            return axios.post(`${FIREBASE_GENNEO}/daftar.json`, friend)
+                .then(response => {
+                    var data = Object.assign({}, response.data, friend);
+                    return data;
+                }).catch(err => {
+                    return null;
+                });
+        })).then(response => {
+            res.json(response);
+        });
     });
 
     app.post('/genneo/registerfriends', (req, res) => {
