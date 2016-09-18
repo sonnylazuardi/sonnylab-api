@@ -48,13 +48,28 @@ var Genneo = function Genneo(app) {
             request.path = '/v3/mail/send';
             request.body = requestBody;
             sg.API(request, function (response) {
-                console.log(Object.assign({}, data, { sent: true }));
                 _axios2.default.put(FIREBASE_GENNEO + '/daftar/' + data.name + '.json', Object.assign({}, data, { sent: true }));
             });
 
             res.json(data);
         }).catch(function (err) {
             res.json(null);
+        });
+    });
+
+    app.post('/genneo/friends', function (req, res) {
+        var id = req.body.id;
+        var friends = req.body.friends;
+        Promise.all(friends.map(function (friend) {
+            friend.referral = id;
+            return _axios2.default.post(FIREBASE_GENNEO + '/daftar.json', friend).then(function (response) {
+                var data = Object.assign({}, response.data, friend);
+                return data;
+            }).catch(function (err) {
+                return null;
+            });
+        })).then(function (response) {
+            res.json(response);
         });
     });
 
