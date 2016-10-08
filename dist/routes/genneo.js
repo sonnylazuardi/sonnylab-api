@@ -156,6 +156,23 @@ var Genneo = function Genneo(app) {
             res.json({ success: false });
         });
     });
+
+    app.get('/genneo/idemailmap', function (req, res) {
+        _axios2.default.get(FIREBASE_GENNEO + '/daftar.json').then(function (response) {
+            var data = response.data;
+            var pendaftar = [];
+            for (var id in data) {
+                pendaftar.push({
+                    id: id,
+                    email: data[id].email
+                });
+            }
+            res.json(pendaftar);
+        }).catch(function (e) {
+            console.log(e);
+            res.json({ success: false });
+        });
+    });
 };
 
 exports.default = Genneo;
