@@ -98,6 +98,64 @@ var Genneo = function Genneo(app) {
             res.json(pendaftar);
         });
     });
+
+    app.get('/genneo/listpendaftar', function (req, res) {
+        _axios2.default.get(FIREBASE_GENNEO + '/daftar.json').then(function (response) {
+            var data = response.data;
+            var pendaftar = [];
+            for (var id in data) {
+                pendaftar.push(Object.assign({}, data[id], { id: id }));
+            }
+            pendaftar = pendaftar.filter(function (value, index, self) {
+                return self.indexOf(pendaftar.filter(function (user) {
+                    return user.email === value.email;
+                })[0]) === index;
+            });
+            res.json(pendaftar);
+        });
+    });
+
+    app.get('/genneo/presences', function (req, res) {
+        _axios2.default.get(FIREBASE_GENNEO + '/presences.json').then(function (response) {
+            var data = response.data;
+            var pendaftar = [];
+            for (var id in data) {
+                pendaftar.push(Object.assign({}, data[id], { id: id }));
+            }
+            res.json(pendaftar);
+        });
+    });
+
+    app.post('/genneo/presences', function (req, res) {
+        var id = req.body.id;
+        var email = req.body.email;
+        var nama = req.body.nama;
+        var withFriends = req.body.withFriends;
+        _axios2.default.put(FIREBASE_GENNEO + '/presences/' + id + '.json', {
+            id: id,
+            email: email,
+            nama: nama,
+            withFriends: withFriends
+        }).then(function (response) {
+            console.log(response);
+            res.json(response.data);
+        }).catch(function (e) {
+            console.log(e);
+            res.json({ success: false });
+        });
+    });
+
+    app.delete('/genneo/presences', function (req, res) {
+        var id = req.body.id;
+        var email = req.body.email;
+        var withFriends = req.body.withFriends;
+        _axios2.default.delete(FIREBASE_GENNEO + '/presences/' + id + '.json').then(function (response) {
+            res.json(response.data);
+        }).catch(function (e) {
+            console.log(e);
+            res.json({ success: false });
+        });
+    });
 };
 
 exports.default = Genneo;

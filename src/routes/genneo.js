@@ -94,6 +94,63 @@ const Genneo = (app) => {
         });
     });
 
+    app.get('/genneo/listpendaftar', (req, res) => {
+        axios.get(`${FIREBASE_GENNEO}/daftar.json`).then(response => {
+            var data = response.data;
+            var pendaftar = [];
+            for (var id in data) {
+                pendaftar.push(Object.assign({}, data[id], {id}));
+            }
+            pendaftar = pendaftar.filter((value, index, self) => {
+                return self.indexOf(pendaftar.filter(user => user.email === value.email)[0]) === index;
+            });
+            res.json(pendaftar);
+        });
+    });
+
+    app.get('/genneo/presences', (req, res) => {
+        axios.get(`${FIREBASE_GENNEO}/presences.json`).then(response => {
+            var data = response.data;
+            var pendaftar = [];
+            for (var id in data) {
+                pendaftar.push(Object.assign({}, data[id], {id}));
+            }
+            res.json(pendaftar);
+        });
+    });
+
+    app.post('/genneo/presences', (req, res) => {
+        var id = req.body.id;
+        var email = req.body.email;
+        var nama = req.body.nama;
+        var withFriends = req.body.withFriends;
+        axios.put(`${FIREBASE_GENNEO}/presences/${id}.json`, {
+            id,
+            email,
+            nama,
+            withFriends
+        }).then((response) => {
+            console.log(response);
+            res.json(response.data);
+        }).catch(e => {
+            console.log(e)
+            res.json({success: false})
+        });
+    });
+
+    app.delete('/genneo/presences', (req, res) => {
+        var id = req.body.id;
+        var email = req.body.email;
+        var withFriends = req.body.withFriends;
+        axios.delete(`${FIREBASE_GENNEO}/presences/${id}.json`)
+            .then((response) => {
+                res.json(response.data);
+            }).catch(e => {
+                console.log(e)
+                res.json({success: false})
+            });
+    });
+
 };
 
 export default Genneo;
