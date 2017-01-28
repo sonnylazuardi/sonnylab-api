@@ -18,7 +18,7 @@ var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var FIREBASE_GENNEO = 'https://genneounited-4b294.firebaseio.com';
+var FIREBASE_GENNEO = 'https://genneo-united-stay-connected.firebaseio.com';
 
 var sg = require('sendgrid').SendGrid(process.env.SENDGRID_API_KEY || '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');
 var helper = require('sendgrid').mail;
