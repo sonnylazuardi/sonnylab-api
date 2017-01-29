@@ -4,7 +4,7 @@ import moment from 'moment';
 
 var FIREBASE_GENNEO = `https://genneo-united-stay-connected.firebaseio.com`;
 
-var sg = require('sendgrid').SendGrid(process.env.SENDGRID_API_KEY || `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`);
+var sg = require('sendgrid').SendGrid(process.env.SENDGRID_API_KEY || `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`);
 var helper = require('sendgrid').mail;
 
 const Genneo = (app) => {
@@ -23,10 +23,10 @@ const Genneo = (app) => {
 
                 var from_email = new helper.Email("gbipplriaubdg@gmail.com");
                 var to_email = new helper.Email(data.email);
-                var subject = "Pendaftaran PASSION - Genneo United";
+                var subject = "Pendaftaran STAY CONNECTED - Genneo United";
                 var content = new helper.Content("text/html", `
-                    <h2>PASSION - Genneo United 🎉🎉</h2>
-                    <p>Selamat kamu sudah berhasil terdaftar di PASSION - GENNEO UNITED</p>
+                    <h2>STAY CONNECTED - Genneo United 🎉🎉</h2>
+                    <p>Selamat kamu sudah berhasil terdaftar di STAY CONNECTED - GENNEO UNITED</p>
                     <br/>
                     <img src="http://gu.gbippl.id/img/invitation.jpg" alt="" />
                     <br/>
@@ -40,7 +40,10 @@ const Genneo = (app) => {
                 request.method = 'POST';
                 request.path = '/v3/mail/send';
                 request.body = requestBody;
+
+                console.log('sending email to ', data.email);
                 sg.API(request, (response) => {
+                    console.log('RESP', response);
                     axios.put(`${FIREBASE_GENNEO}/daftar/${data.name}.json`, Object.assign({}, data, {sent: true}));
                 });
 
