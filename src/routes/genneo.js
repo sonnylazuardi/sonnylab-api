@@ -124,17 +124,18 @@ const Genneo = (app) => {
 
     app.post('/genneo/presences', (req, res) => {
         var id = req.body.id;
-        var email = req.body.email;
-        var nama = req.body.nama;
-        var withFriends = req.body.withFriends;
-        axios.put(`${FIREBASE_GENNEO}/presences/${id}.json`, {
-            id,
-            email,
-            nama,
-            withFriends
+        axios.post(`${FIREBASE_GENNEO}/presences.json`, {
+            id
         }).then((response) => {
             console.log(response);
-            res.json(response.data);
+            axios.get(`${FIREBASE_GENNEO}/presences.json`).then(response => {
+                var data = response.data;
+                var hadir = [];
+                for (var id in data) {
+                    hadir.push(data[id]);
+                }
+                res.json(hadir);
+            });
         }).catch(e => {
             console.log(e)
             res.json({success: false})
